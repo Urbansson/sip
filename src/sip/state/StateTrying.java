@@ -30,8 +30,8 @@ public class StateTrying extends SIPState{
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
 
 			//TODO: make it so it can timeout
-			inData = inFromClient.readLine();
-			
+			//inData = inFromClient.readLine();
+			inData = readData(inFromClient);
 			System.out.println("Recived: " + inData);
 			outToClient.writeBytes(PDU.TRYING.toString()+"\n");
 
@@ -93,6 +93,40 @@ public class StateTrying extends SIPState{
 	@Override
 	public States getState() {
 		return States.TRYING;
+	}
+	
+	/*
+	 * Wrapper for setting timeout for a socket before reading from it
+	 *
+	 */
+	public String readData(BufferedReader inFromClient) throws Exception{
+		/*
+		 * Current time
+		 * !INVITE reduce timeout of socket to delta currenttime
+		 * for loop reduces
+		 */
+		String tmp = null;
+		int timeOut = 10000;
+		SIPHandler.getClientSocket().setSoTimeout(timeOut);
+		long startTime = System.currentTimeMillis();
+		boolean loop = true;
+		
+		do{
+			tmp = inFromClient.readLine();
+			if(loop = PDUParser.parse(tmp) != PDU.INVITE){
+				
+				timeOut -=(long) (System.currentTimeMillis() - startTime);
+				if(timeOut <= 0){
+					SIPHandler.getClientSocket().setSoTimeout(0);
+					throw new Exception("No invite recieved before timeout");
+				}
+				startTime = System.currentTimeMillis();
+				SIPHandler.getClientSocket().setSoTimeout(timeOut);
+			}
+			
+		}while(loop);
+		
+		return  tmp;
 	}
 
 
