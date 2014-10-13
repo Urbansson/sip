@@ -72,5 +72,4 @@ public class StateRinging extends SIPState{
 			return States.RINGING;
 		}
 
-
 	}
