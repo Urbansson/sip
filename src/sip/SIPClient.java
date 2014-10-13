@@ -5,7 +5,13 @@ import java.util.Scanner;
 import sip.pdu.PDU;
 import sip.pdu.PDUParser;
 import sip.state.SIPHandler;
-
+/**
+ * 
+ * @author Emil
+ * Kewl javadox 4 SIPClient
+ * Wow
+ *
+ */
 
 public class SIPClient {
 	
