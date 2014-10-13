@@ -33,11 +33,12 @@ public class SIPClientThread implements Runnable{
 			this.sipHandler.sendIvinte(clientSocket,command);
 			
 			System.out.println("Closing Client thread All is done");
-			System.out.println(sipHandler.getState());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("Your invite was wrongly formatted");
+			
 		}
 		System.out.println("Client thread stopped7");
 		System.out.println(sipHandler.getState());

@@ -42,6 +42,7 @@ public class StateWaiting extends SIPState{
 			outToClient.writeBytes(PDU.INVITE+" "+SIPHandler.getClientData().toString()+"\n");
 			
 			do{
+				//TODO: add timeout 
 				inData = inFromClient.readLine();
 				System.out.println(inData);
 				
@@ -51,8 +52,7 @@ public class StateWaiting extends SIPState{
 					streamer.connectTo(SIPHandler.getClientData().getIp_to(), i);
 					
 					System.out.println("Streamer is set");
-
-				}	
+				}
 				
 			}while(PDUParser.parse(inData)!=PDU.OK);
 			
@@ -61,7 +61,7 @@ public class StateWaiting extends SIPState{
 			System.out.println("Last of Waiting: "+ SIPHandler.getState());
 			
 		}catch(Exception e){	
-			e.printStackTrace();
+			//e.printStackTrace();
 			SIPHandler.diconnect();
 		}
 	}

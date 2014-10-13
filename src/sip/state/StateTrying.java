@@ -44,34 +44,32 @@ public class StateTrying extends SIPState{
 
 				if(tempData==null)
 					throw new Exception("Wrong formatted data");
-				
-				
+
+
 				SIPHandler.setClientData(tempData);
 				AudioStreamUDP streamer = new AudioStreamUDP();
 				SIPHandler.setStreamer(streamer);	
-				
+
 				int port = streamer.getLocalPort();
 				System.out.println("Bound to local port = " + port);	
-				
+
 				streamer.connectTo(SIPHandler.getClientData().getIp_from(), SIPHandler.getClientData().getVoice_port());
 				System.out.println("Streamer is set");
 
-		
+
 				outToClient.writeBytes(PDU.RINGING.toString()+" "+port+"\n");
+				
+				SIPHandler.setState(SIPHandler.getStateRinging());
+				SIPHandler.notifyUser();
 
 			}else{
 				throw new Exception("Not and INVITE package");
 			}
 
 		}catch(Exception e){
-			e.printStackTrace();
-
-			//TODO: might be executed twice fix
+			//e.printStackTrace();
 			SIPHandler.diconnect();
 		}finally{}	
-
-		SIPHandler.setState(SIPHandler.getStateRinging());
-		SIPHandler.notifyUser();
 
 	}
 
@@ -86,7 +84,7 @@ public class StateTrying extends SIPState{
 		SIPHandler.setClientSocket(null);
 		SIPHandler.setCallAnswered(false);
 		SIPHandler.setStreamer(null);
-		
+
 		SIPHandler.setState(SIPHandler.getStateIdle());
 	}
 
@@ -94,7 +92,7 @@ public class StateTrying extends SIPState{
 	public States getState() {
 		return States.TRYING;
 	}
-	
+
 	/*
 	 * Wrapper for setting timeout for a socket before reading from it
 	 *
@@ -110,11 +108,11 @@ public class StateTrying extends SIPState{
 		SIPHandler.getClientSocket().setSoTimeout(timeOut);
 		long startTime = System.currentTimeMillis();
 		boolean loop = true;
-		
+
 		do{
 			tmp = inFromClient.readLine();
 			if(loop = PDUParser.parse(tmp) != PDU.INVITE){
-				
+
 				timeOut -=(long) (System.currentTimeMillis() - startTime);
 				if(timeOut <= 0){
 					SIPHandler.getClientSocket().setSoTimeout(0);
@@ -123,9 +121,9 @@ public class StateTrying extends SIPState{
 				startTime = System.currentTimeMillis();
 				SIPHandler.getClientSocket().setSoTimeout(timeOut);
 			}
-			
+
 		}while(loop);
-		
+
 		return  tmp;
 	}
 

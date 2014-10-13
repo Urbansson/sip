@@ -30,7 +30,6 @@ public class StateRinging extends SIPState{
 		if(SIPHandler.isCallAnswered() && i<5){
 			SIPHandler.keepAlive();
 		}else{
-			//TODO: might be executed twice, fix!
 			SIPHandler.diconnect();
 		}
 	}
@@ -61,10 +60,8 @@ public class StateRinging extends SIPState{
 				SIPHandler.setCallAnswered(false);
 				SIPHandler.setStreamer(null);
 				
-				//clear more stuff
 				SIPHandler.setState(SIPHandler.getStateIdle());
 			}
-
 		}
 
 		@Override

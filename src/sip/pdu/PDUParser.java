@@ -1,7 +1,9 @@
 package sip.pdu;
 
 public class PDUParser {
-	public static PDU parse(String toParse){
+	public static PDU parse(String toParse) throws Exception{
+		if(toParse==null)
+			throw new Exception("Trying to Parse NULL");
 		String pduStr = toParse.split(" ")[0]; 
 		switch(pduStr){
 		case "INVITE": return PDU.INVITE;

@@ -75,14 +75,14 @@ public class StateConnected extends SIPState{
 
 			System.out.println("Resetting to IDLE");
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 
 		}finally{
 
 			try {
 				SIPHandler.getClientSocket().setSoTimeout(0);
 			} catch (SocketException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 

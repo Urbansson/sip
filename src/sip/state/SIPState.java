@@ -19,6 +19,5 @@ public abstract class SIPState {
 	public void sendIvinte(Socket clientSocket, String command){}
 		
 	public void diconnect(){}
-
 	
 }

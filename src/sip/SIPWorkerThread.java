@@ -21,13 +21,10 @@ public class SIPWorkerThread implements Runnable{
 
 
 		try {
-
 			sipHandler.recivedConnection(this.clientSocket);	
-
 			System.out.println("Closing Thread all is done");
-
 		}catch(Exception e){
-			e.printStackTrace();
+			//e.printStackTrace();
 			System.out.println("Stopped");
 		}
 
