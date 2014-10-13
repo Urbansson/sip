@@ -34,9 +34,9 @@ public class StateConnected extends SIPState{
 		try {
 			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(SIPHandler.getClientSocket().getInputStream()));
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
+			
 			SIPHandler.getClientSocket().setSoTimeout(2000);
 			outToClient.writeBytes(PDU.OK.toString()+"\n");
-
 
 			while(true){
 				outToClient.writeBytes(PDU.ALIVE.toString()+"\n");

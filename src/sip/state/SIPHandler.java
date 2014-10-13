@@ -44,8 +44,7 @@ public class SIPHandler {
 		this.streamer = null;
 	}
 
-
-	public States getState(){
+	public synchronized States getState(){
 		return this.currentState.getState();
 	}
 
@@ -114,14 +113,10 @@ public class SIPHandler {
 		this.callAnswered = callAnswered;
 	}
 
-	protected SIPState getStateIdle(){return this.StateIdle;}
-	protected SIPState getStateTrying(){return this.StateTrying;}
-	protected SIPState getStateRinging(){return this.StateRinging;}
-	protected SIPState getStateWating(){return this.StateWaiting;}
-	protected SIPState getStateConnected(){return this.StateConnected;}
-
-
-
-
+	protected synchronized SIPState getStateIdle(){return this.StateIdle;}
+	protected synchronized SIPState getStateTrying(){return this.StateTrying;}
+	protected synchronized SIPState getStateRinging(){return this.StateRinging;}
+	protected synchronized SIPState getStateWating(){return this.StateWaiting;}
+	protected synchronized SIPState getStateConnected(){return this.StateConnected;}
 
 }

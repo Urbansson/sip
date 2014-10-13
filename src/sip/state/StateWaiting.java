@@ -28,6 +28,7 @@ public class StateWaiting extends SIPState{
 
 			//Set up audio Streamer get all data create data object
 			//parse 
+			
 			String []dataStr = command.split(" "); 
 			
 			AudioStreamUDP streamer = new AudioStreamUDP();
@@ -54,7 +55,6 @@ public class StateWaiting extends SIPState{
 				}	
 				
 			}while(PDUParser.parse(inData)!=PDU.OK);
-			
 			
 			SIPHandler.setState(SIPHandler.getStateConnected());
 			SIPHandler.keepAlive();

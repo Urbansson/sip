@@ -2,7 +2,6 @@ package sip.state;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import audioStreamUDP.AudioStreamUDP;
@@ -24,7 +23,6 @@ public class StateTrying extends SIPState{
 	public void setUpResources(String Command){
 
 		System.out.println("Trying to set up resources");
-
 		String inData = null;
 
 		try {
@@ -32,9 +30,9 @@ public class StateTrying extends SIPState{
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
 
 			//TODO: make it so it can timeout
-			inData = readData(inFromClient);
+			inData = inFromClient.readLine();
+			
 			System.out.println("Recived: " + inData);
-
 			outToClient.writeBytes(PDU.TRYING.toString()+"\n");
 
 
@@ -67,6 +65,7 @@ public class StateTrying extends SIPState{
 
 		}catch(Exception e){
 			e.printStackTrace();
+
 			//TODO: might be executed twice fix
 			SIPHandler.diconnect();
 		}finally{}	
@@ -82,13 +81,11 @@ public class StateTrying extends SIPState{
 		SIPHandler.setClientData(null);
 		try {
 			SIPHandler.getClientSocket().close();
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 
 		SIPHandler.setClientSocket(null);
 		SIPHandler.setCallAnswered(false);
 		SIPHandler.setStreamer(null);
-		//SIPHandler.init();
 		
 		SIPHandler.setState(SIPHandler.getStateIdle());
 	}
@@ -96,40 +93,6 @@ public class StateTrying extends SIPState{
 	@Override
 	public States getState() {
 		return States.TRYING;
-	}
-	
-	/*
-	 * Wrapper for setting timeout for a socket before reading from it
-	 *
-	 */
-	public String readData(BufferedReader inFromClient) throws Exception{
-		/*
-		 * Current time
-		 * !INVITE reduce timeout of socket to delta currenttime
-		 * for loop reduces
-		 */
-		String tmp = null;
-		int timeOut = 10000;
-		SIPHandler.getClientSocket().setSoTimeout(timeOut);
-		long startTime = System.currentTimeMillis();
-		boolean loop = true;
-		
-		do{
-			tmp = inFromClient.readLine();
-			if(loop = PDUParser.parse(tmp) != PDU.INVITE){
-				
-				timeOut -=(long) (System.currentTimeMillis() - startTime);
-				if(timeOut <= 0){
-					SIPHandler.getClientSocket().setSoTimeout(0);
-					throw new Exception("No invite recieved before timeout");
-				}
-				startTime = System.currentTimeMillis();
-				SIPHandler.getClientSocket().setSoTimeout(timeOut);
-			}
-			
-		}while(loop);
-		
-		return  tmp;
 	}
 
 
