@@ -3,7 +3,13 @@ package sip;
 import java.util.Scanner;
 
 import sip.state.SIPHandler;
-
+/**
+ * 
+ * @author Emil
+ * Kewl javadox 4 SIPClient
+ * Wow
+ *
+ */
 
 public class SIPClient {
 	
