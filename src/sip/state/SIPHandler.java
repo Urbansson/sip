@@ -76,10 +76,10 @@ public class SIPHandler {
 		currentState.keepAlive();
 	}
 
-	protected void setState(SIPState newSIPState){
-		this.currentState = newSIPState;
+	protected synchronized void setState(SIPState newSIPState){
+			this.currentState = newSIPState;
 	}
-
+	
 
 	protected void setClientSocket(Socket clientSocket){
 		this.clientSocket = clientSocket;

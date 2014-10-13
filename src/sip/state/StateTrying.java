@@ -29,8 +29,6 @@ public class StateTrying extends SIPState{
 			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(SIPHandler.getClientSocket().getInputStream()));
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
 
-			//TODO: make it so it can timeout
-			//inData = inFromClient.readLine();
 			inData = readData(inFromClient);
 			System.out.println("Recived: " + inData);
 			outToClient.writeBytes(PDU.TRYING.toString()+"\n");
@@ -100,11 +98,7 @@ public class StateTrying extends SIPState{
 	 *
 	 */
 	public String readData(BufferedReader inFromClient) throws Exception{
-		/*
-		 * Current time
-		 * !INVITE reduce timeout of socket to delta currenttime
-		 * for loop reduces
-		 */
+
 		String tmp = null;
 		int timeOut = 10000;
 		SIPHandler.getClientSocket().setSoTimeout(timeOut);

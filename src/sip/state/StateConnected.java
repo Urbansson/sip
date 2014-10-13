@@ -96,9 +96,7 @@ public class StateConnected extends SIPState{
 
 		SIPHandler.setClientSocket(null);
 		SIPHandler.setCallAnswered(false);
-
-		//SIPHandler.init();
-
+		SIPHandler.setStreamer(null);
 		SIPHandler.setState(SIPHandler.getStateIdle());
 	}
 
@@ -110,7 +108,7 @@ public class StateConnected extends SIPState{
 		synchronized (this) { 
 			this.notify(); 
 		}
-
+		
 		this.active = false;
 
 	}

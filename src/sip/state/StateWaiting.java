@@ -78,10 +78,9 @@ public class StateWaiting extends SIPState{
 		SIPHandler.setClientSocket(null);
 		SIPHandler.setCallAnswered(false);
 		
-		//SIPHandler.init();
-
-		
+		SIPHandler.setStreamer(null);
 		SIPHandler.setState(SIPHandler.getStateIdle());
+	
 	}
 
 	@Override
