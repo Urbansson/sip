@@ -23,7 +23,6 @@ public class SIPClientThread implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			String remoteIp = command.split(" ")[2]; 
 			
@@ -35,13 +34,9 @@ public class SIPClientThread implements Runnable{
 			System.out.println("Closing Client thread All is done");
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			//e.printStackTrace();
-			System.out.println("Your invite was wrongly formatted");
-			
+			System.out.println("Failed to connect to renote host");
 		}
-		System.out.println("Client thread stopped7");
-		System.out.println(sipHandler.getState());
 	}	
 
 	public synchronized void stop(){

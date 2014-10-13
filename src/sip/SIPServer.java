@@ -75,11 +75,11 @@ public class SIPServer implements Runnable {
 
 	public synchronized void stop(){
 		this.isStopped = true;
-
+		SIPwt.stop();
 		try {
 			this.serverSocket.close();
 		} catch (IOException e) {
-			throw new RuntimeException("Error closing server", e);
+			//throw new RuntimeException("Error closing server", e);
 		}
 
 		if(SIPwt!= null)

@@ -3,7 +3,7 @@ package sip.state;
 import java.net.Socket;
 
 import audioStreamUDP.AudioStreamUDP;
-import sip.pdu.data.SIPInviteData;
+import sip.pdu.data.SIPData;
 
 
 
@@ -18,7 +18,7 @@ public class SIPHandler {
 	private SIPState currentState;
 
 	private Socket clientSocket;
-	private SIPInviteData data;
+	private SIPData data;
 	private boolean callAnswered;
 	private AudioStreamUDP streamer;
 
@@ -89,11 +89,11 @@ public class SIPHandler {
 		return this.clientSocket;
 	}
 
-	protected void setClientData(SIPInviteData data){
+	protected void setClientData(SIPData data){
 		this.data = data;
 	}
 
-	protected SIPInviteData getClientData(){
+	protected SIPData getClientData(){
 		return this.data;
 	}
 

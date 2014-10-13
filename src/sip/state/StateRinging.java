@@ -1,5 +1,7 @@
 package sip.state;
 
+import AudioPlayer.Player;
+
 
 public class StateRinging extends SIPState{
 
@@ -13,12 +15,19 @@ public class StateRinging extends SIPState{
 	public void notifyUser(){
 		int i = 0;
 
+
+		Player player = new Player();
+		new Thread(player).start();
+
+
 		while(!SIPHandler.isCallAnswered() && i<5){
 
 			try {
 				System.out.println("Incoming call from: " + SIPHandler.getClientData().getSip_from());
+				//this.play("RingingSound.wav");
+
 				synchronized (this) {
-					this.wait(2000);
+					this.wait(3000);
 				} 
 			} catch (Exception e) {
 				//e.printStackTrace();
@@ -26,12 +35,16 @@ public class StateRinging extends SIPState{
 			}
 			i+=1;
 		}
-	
+
+		player.stop();
+
 		if(SIPHandler.isCallAnswered() && i<5){
+			SIPHandler.setState(SIPHandler.getStateConnected());
 			SIPHandler.keepAlive();
 		}else{
 			SIPHandler.diconnect();
 		}
+
 	}
 
 	public void answerCall(){
@@ -40,33 +53,32 @@ public class StateRinging extends SIPState{
 		synchronized (this) { 
 			this.notify(); 
 			SIPHandler.setCallAnswered(true);
-			SIPHandler.setState(SIPHandler.getStateConnected());
 		}
 	}
 
-		public void diconnect(){
-			System.out.println("Disconnecting from Ringing");
+	public void diconnect(){
+		System.out.println("Disconnecting from Ringing");
 
-			synchronized (this) { 
-				this.notify(); 
-
-				SIPHandler.setClientData(null);
-				try {
-					SIPHandler.getClientSocket().close();
-				} catch (Exception e) {
-				}
-
-				SIPHandler.setClientSocket(null);
-				SIPHandler.setCallAnswered(false);
-				SIPHandler.setStreamer(null);
-				
-				SIPHandler.setState(SIPHandler.getStateIdle());
-			}
+		synchronized (this) { 
+			this.notify(); 
+		}
+		SIPHandler.setClientData(null);
+		try {
+			SIPHandler.getClientSocket().close();
+		} catch (Exception e) {
 		}
 
-		@Override
-		public States getState() {
-			return States.RINGING;
-		}
+		SIPHandler.setClientSocket(null);
+		SIPHandler.setCallAnswered(false);
+		SIPHandler.setStreamer(null);
+
+		SIPHandler.setState(SIPHandler.getStateIdle());
 
 	}
+
+	@Override
+	public States getState() {
+		return States.RINGING;
+	}
+
+}

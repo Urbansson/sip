@@ -17,8 +17,6 @@ public class SIPWorkerThread implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.println("Worker thread is up");
-
 
 		try {
 			sipHandler.recivedConnection(this.clientSocket);	

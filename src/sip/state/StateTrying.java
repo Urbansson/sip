@@ -8,7 +8,7 @@ import audioStreamUDP.AudioStreamUDP;
 import sip.pdu.InviteParser;
 import sip.pdu.PDU;
 import sip.pdu.PDUParser;
-import sip.pdu.data.SIPInviteData;
+import sip.pdu.data.SIPData;
 
 
 
@@ -22,7 +22,7 @@ public class StateTrying extends SIPState{
 
 	public void setUpResources(String Command){
 
-		System.out.println("Trying to set up resources");
+		//System.out.println("Trying to set up resources");
 		String inData = null;
 
 		try {
@@ -30,14 +30,15 @@ public class StateTrying extends SIPState{
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
 
 			inData = readData(inFromClient);
-			System.out.println("Recived: " + inData);
+			//System.out.println("Recived: " + inData);
 			outToClient.writeBytes(PDU.TRYING.toString()+"\n");
 
 
 			if(PDUParser.parse(inData)==PDU.INVITE){
 
+					
 				//TODO: Make it so invite parsers throws exception for error
-				SIPInviteData tempData =  InviteParser.parse(inData);
+				SIPData tempData =  InviteParser.parse(inData);
 
 
 				if(tempData==null)
@@ -49,14 +50,14 @@ public class StateTrying extends SIPState{
 				SIPHandler.setStreamer(streamer);	
 
 				int port = streamer.getLocalPort();
-				System.out.println("Bound to local port = " + port);	
+				//System.out.println("Bound to local port = " + port);	
 
 				streamer.connectTo(SIPHandler.getClientData().getIp_from(), SIPHandler.getClientData().getVoice_port());
-				System.out.println("Streamer is set");
+				//System.out.println("Streamer is set");
 
 
 				outToClient.writeBytes(PDU.RINGING.toString()+" "+port+"\n");
-				
+
 				SIPHandler.setState(SIPHandler.getStateRinging());
 				SIPHandler.notifyUser();
 
@@ -73,17 +74,19 @@ public class StateTrying extends SIPState{
 
 	public void diconnect(){
 		System.out.println("Disconnecting from Trying");
+		synchronized (SIPHandler) { 
 
-		SIPHandler.setClientData(null);
-		try {
-			SIPHandler.getClientSocket().close();
-		} catch (Exception e) {}
+			SIPHandler.setClientData(null);
+			try {
+				SIPHandler.getClientSocket().close();
+			} catch (Exception e) {}
 
-		SIPHandler.setClientSocket(null);
-		SIPHandler.setCallAnswered(false);
-		SIPHandler.setStreamer(null);
+			SIPHandler.setClientSocket(null);
+			SIPHandler.setCallAnswered(false);
+			SIPHandler.setStreamer(null);
 
-		SIPHandler.setState(SIPHandler.getStateIdle());
+			SIPHandler.setState(SIPHandler.getStateIdle());
+		}
 	}
 
 	@Override
@@ -98,7 +101,7 @@ public class StateTrying extends SIPState{
 	public String readData(BufferedReader inFromClient) throws Exception{
 
 		String tmp = null;
-		int timeOut = 10000;
+		int timeOut = 1000;
 		SIPHandler.getClientSocket().setSoTimeout(timeOut);
 		long startTime = System.currentTimeMillis();
 		boolean loop = true;
