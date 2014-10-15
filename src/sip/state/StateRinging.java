@@ -16,26 +16,36 @@ public class StateRinging extends SIPState{
 		int i = 0;
 
 
-		Player player = new Player();
+		Player player = new Player("RingingSound.wav");
 		new Thread(player).start();
 
+		System.out.println("Incoming call from: " + SIPHandler.getClientData().getSip_from());
 
+		try{
+			synchronized (this) {
+				this.wait(20000);
+			} 
+		}catch (Exception e) {
+			//e.printStackTrace();
+		}
+		
+/*
 		while(!SIPHandler.isCallAnswered() && i<5){
 
 			try {
 				System.out.println("Incoming call from: " + SIPHandler.getClientData().getSip_from());
 				//this.play("RingingSound.wav");
 
-				synchronized (this) {
-					this.wait(3000);
-				} 
+
 			} catch (Exception e) {
 				//e.printStackTrace();
 				break;
 			}
 			i+=1;
 		}
-
+*/
+		
+		
 		player.stop();
 
 		if(SIPHandler.isCallAnswered() && i<5){

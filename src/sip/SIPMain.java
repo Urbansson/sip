@@ -16,8 +16,8 @@ public class SIPMain {
 		SIPClientThread client = null;
 		Thread clientT = null;
 
-		SIPServer server = new SIPServer(sipHandler);
-		Thread serverT = new Thread(server);
+		SIPServer server = null;
+		Thread serverT = null;
 
 
 		//t.start();
@@ -46,6 +46,8 @@ public class SIPMain {
 			input = scan.nextLine();
 
 			if(input.equals("1")){
+				server = new SIPServer(sipHandler);
+				serverT = new Thread(server);
 				serverT.start();
 			}
 			else if(input.equals("2")){
@@ -70,7 +72,8 @@ public class SIPMain {
 				sipHandler.diconnect();
 			}
 			else if(input.equals("0")){
-				server.stop();
+				if(server != null)
+					server.stop();
 				if(client!=null)
 					client.stop();
 				break;

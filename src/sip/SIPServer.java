@@ -25,8 +25,10 @@ public class SIPServer implements Runnable {
 
 	@Override
 	public void run() {
-		this.startServerSocket();
-
+		if(!this.startServerSocket()){
+			System.out.println("Failed to start server");
+			return;
+		}
 		System.out.println("Server thread started");
 
 		while(! isStopped()){
@@ -86,12 +88,14 @@ public class SIPServer implements Runnable {
 			SIPwt.stop();
 	}
 
-	private void startServerSocket() {
+	private boolean startServerSocket() {
 		try {
 			this.serverSocket = new ServerSocket(this.serverPort);
 		} catch (IOException e) {
-			throw new RuntimeException("Cannot open port "+serverPort, e);
+			//throw new RuntimeException("Cannot open port "+serverPort, e);
+			return false;
 		}
+		return true;
 	}
 
 

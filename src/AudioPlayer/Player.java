@@ -10,12 +10,13 @@ public class Player implements Runnable {
 	Clip clip =null;
 	AudioInputStream inputStream = null;
 
-	public Player() {
+	public Player(String fileName) {
 		try {
 
 			clip = AudioSystem.getClip();
-			inputStream = AudioSystem.getAudioInputStream(new File("RingingSound.wav"));
-			
+			inputStream = AudioSystem.getAudioInputStream(new File(fileName));
+			//inputStream = AudioSystem.getAudioInputStream(new File("RingingSound.wav"));
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

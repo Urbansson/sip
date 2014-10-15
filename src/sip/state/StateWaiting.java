@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 
+import AudioPlayer.Player;
 import audioStreamUDP.AudioStreamUDP;
 import sip.pdu.PDU;
 import sip.pdu.PDUParser;
@@ -22,6 +23,10 @@ public class StateWaiting extends SIPState{
 
 		String inData;
 
+		Player player = new Player("DailUp.wav");
+		new Thread(player).start();
+		
+		
 		try {
 			BufferedReader inFromClient = new BufferedReader(new InputStreamReader(SIPHandler.getClientSocket().getInputStream()));
 			DataOutputStream outToClient = new DataOutputStream(SIPHandler.getClientSocket().getOutputStream());
@@ -40,6 +45,7 @@ public class StateWaiting extends SIPState{
 
 			SIPHandler.setClientData(new SIPData(dataStr[0], dataStr[1], InetAddress.getByName(dataStr[2]), SIPHandler.getClientSocket().getLocalAddress(), port));
 			outToClient.writeBytes(PDU.INVITE+" "+SIPHandler.getClientData().toString()+"\n");
+			new Thread(player).start();
 
 			do{
 				//TODO: add timeout 
@@ -55,13 +61,15 @@ public class StateWaiting extends SIPState{
 				}
 
 			}while(PDUParser.parse(inData)!=PDU.OK);
-
+			
+			player.stop();
 			SIPHandler.setState(SIPHandler.getStateConnected());
 			SIPHandler.keepAlive();
 			System.out.println("Last of Waiting: "+ SIPHandler.getState());
 
 		}catch(Exception e){	
 			//e.printStackTrace();
+			player.stop();
 			SIPHandler.diconnect();
 		}
 	}
