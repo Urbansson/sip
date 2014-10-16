@@ -1,6 +1,6 @@
 package AudioPlayer;
 
-import java.io.File;
+import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -9,13 +9,17 @@ import javax.sound.sampled.Clip;
 public class Player implements Runnable {
 	Clip clip =null;
 	AudioInputStream inputStream = null;
-
 	public Player(String fileName) {
 		try {
 
+		     URL defaultSound = getClass().getResource("/AudioPlayer/"+fileName);
+		
+			System.out.println("defaultSound " + defaultSound);  // check the URL!
+			inputStream = AudioSystem.getAudioInputStream(defaultSound);
 			clip = AudioSystem.getClip();
-			inputStream = AudioSystem.getAudioInputStream(new File(fileName));
-			//inputStream = AudioSystem.getAudioInputStream(new File("RingingSound.wav"));
+			//inputStream = AudioSystem.getAudioInputStream((new File(fileName)));
+			//inputStream = AudioSystem.getAudioInputStream(new File(fileName));
+			//inputStream = AudioSystem.getAudioInputStream(new File("/AudioPlayer/RingingSound.wav"));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -33,7 +37,8 @@ public class Player implements Runnable {
 				this.wait();
 			}
 		} catch (Exception e) {
-			System.out.println("play sound error:");
+			//e.printStackTrace();
+			//System.out.println("play sound error:");
 		}
 	}
 

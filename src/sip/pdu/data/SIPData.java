@@ -41,7 +41,8 @@ public class SIPData {
 	}
 	
 	public String toString(){
-		return this.sip_to+" "+this.sip_from+" "+this.ip_to.toString().substring(1)+" "+this.ip_from.toString().substring(1)+" "+this.voice_port+"\n";
+		return this.sip_to+" "+this.sip_from+" "+this.ip_to.getHostAddress()+" "+this.ip_from.getHostAddress()+" "+this.voice_port+"\n";
+		//return this.sip_to+" "+this.sip_from+" "+this.ip_to.toString().substring(1)+" "+this.ip_from.toString().substring(1)+" "+this.voice_port+"\n";
 	}
 	
 	

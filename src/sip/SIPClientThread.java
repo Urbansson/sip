@@ -35,7 +35,7 @@ public class SIPClientThread implements Runnable{
 
 		} catch (IOException e) {
 			//e.printStackTrace();
-			System.out.println("Failed to connect to renote host");
+			System.out.println("Failed to connect to remote host");
 		}
 	}	
 

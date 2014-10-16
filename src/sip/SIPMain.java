@@ -25,7 +25,7 @@ public class SIPMain {
 		String sipId = null;
 		String tempSipId = null;
 		String tempSipIp= null;
-
+		
 		do{
 			System.out.println("Enter your sip id! ");
 			sipId = scan.nextLine();

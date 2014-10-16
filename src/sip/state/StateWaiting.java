@@ -42,7 +42,6 @@ public class StateWaiting extends SIPState{
 			int port = streamer.getLocalPort();
 			System.out.println("Bound to local port = " + port);			
 
-
 			SIPHandler.setClientData(new SIPData(dataStr[0], dataStr[1], InetAddress.getByName(dataStr[2]), SIPHandler.getClientSocket().getLocalAddress(), port));
 			outToClient.writeBytes(PDU.INVITE+" "+SIPHandler.getClientData().toString()+"\n");
 			new Thread(player).start();

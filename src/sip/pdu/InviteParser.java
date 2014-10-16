@@ -14,6 +14,7 @@ public class InviteParser {
 		InetAddress ip_from; 
 		int voice_port; 
 
+		System.out.println(inviteMessage);
 		String []dataStr = inviteMessage.split(" "); 
 		//System.out.println(dataStr[1]+" "+dataStr[2]+" "+dataStr[3]+" "+dataStr[4]+" "+dataStr[5]);
 
